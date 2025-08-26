@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import SellerLanding from "./pages/SellerLanding";
 import SellerSignIn from "./pages/SellerSignIn";
 import SellerSignUp from "./pages/SellerSignUp";
+import MyGigs from "./pages/MyGigs";
+import CreateGig from "./pages/CreateGig";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/seller" element={<SellerLanding />} />
           <Route path="/seller/signin" element={<SellerSignIn />} />
           <Route path="/seller/signup" element={<SellerSignUp />} />
+          <Route path="/seller/my-gigs" element={<MyGigs />} />
+          <Route path="/seller/create-gig" element={<CreateGig />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
