@@ -130,18 +130,42 @@ const MyGigs = () => {
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">My Gigs</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Gigs</h1>
               <p className="text-muted-foreground">
                 Manage your active gigs and create new ones
               </p>
             </div>
             <Button 
               onClick={() => navigate('/seller/create-gig')}
-              className="mt-4 sm:mt-0 bg-primary hover:bg-primary-hover"
+              className="mt-4 sm:mt-0"
             >
               <Plus className="h-4 w-4 mr-2" />
-              Create New Gig
+              Create New
             </Button>
+          </div>
+
+          {/* Status Tabs */}
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2 border-b">
+              <button className="px-4 py-2 text-sm font-medium border-b-2 border-primary text-primary">
+                Active
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Pending Approval  
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Requires Modification
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Draft
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Denied
+              </button>
+              <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+                Paused
+              </button>
+            </div>
           </div>
 
           {/* Stats Cards */}
@@ -311,11 +335,10 @@ const MyGigs = () => {
                           />
                         </TableHead>
                         <TableHead>Gig</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Impressions</TableHead>
+                        <TableHead>Clicks</TableHead>
                         <TableHead>Orders</TableHead>
-                        <TableHead>Rating</TableHead>
-                        <TableHead>Price</TableHead>
+                        <TableHead>Cancellations</TableHead>
                         <TableHead>Updated</TableHead>
                         <TableHead className="w-16">Actions</TableHead>
                       </TableRow>
@@ -344,13 +367,10 @@ const MyGigs = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div>
-                              <p className="font-medium">{gig.category}</p>
-                              <p className="text-sm text-muted-foreground">{gig.subcategory}</p>
-                            </div>
+                            <span className="font-medium">10</span>
                           </TableCell>
                           <TableCell>
-                            {getStatusBadge(gig.status)}
+                            <span className="font-medium">50</span>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center">
@@ -359,13 +379,7 @@ const MyGigs = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center">
-                              <Star className="h-4 w-4 mr-1 text-warning fill-current" />
-                              {gig.rating}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-medium">{gig.priceRange}</span>
+                            <span className="font-medium">0%</span>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center text-sm text-muted-foreground">
