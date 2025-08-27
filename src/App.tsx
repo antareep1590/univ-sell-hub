@@ -12,6 +12,7 @@ import CreateGig from "./pages/CreateGig";
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics"; 
 import Earnings from "./pages/Earnings";
+import MyBusiness from "./pages/MyBusiness";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/seller/create-gig" element={<CreateGig />} />
           <Route path="/seller/analytics" element={<Analytics />} />
           <Route path="/seller/earnings" element={<Earnings />} />
+          <Route path="/seller/my-business" element={<MyBusiness />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
