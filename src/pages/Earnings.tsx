@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Header } from "@/components/Header";
+import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
 import { 
   DollarSign,
@@ -69,7 +69,7 @@ const Earnings = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <AuthenticatedHeader />
       
       <div className="py-8 px-4">
         <div className="container mx-auto max-w-7xl">

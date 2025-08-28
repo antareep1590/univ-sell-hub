@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { 
@@ -118,37 +117,37 @@ const SellerSignUp = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sign up data:", {
-      personal: { firstName, lastName, bio, languages },
-      professional: { skills, education },
-      linkedAccounts: connectedAccounts,
-      security: { email }
-    });
+    // Navigate to dashboard without validation
+    window.location.href = "/seller/dashboard";
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       <div className="py-12 px-4">
         <div className="container mx-auto max-w-4xl">
+          {/* College-style header */}
+          <div className="text-center mb-8">
+            <div className="w-24 h-24 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span className="text-4xl">🎓</span>
+            </div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Join the Student Community!</h1>
+            <p className="text-muted-foreground">Let's set up your profile to showcase your amazing skills</p>
+          </div>
+          
           <Card className="border-card-border shadow-lg">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-foreground">
-                Join Univ Jobs as a Seller
+              <CardTitle className="text-xl font-semibold text-foreground">
+                Student Profile Setup
               </CardTitle>
-              <CardDescription className="text-muted-foreground">
-                Complete your profile to start selling your skills
-              </CardDescription>
             </CardHeader>
             
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="personal">Personal Info</TabsTrigger>
                   <TabsTrigger value="professional">Professional Info</TabsTrigger>
                   <TabsTrigger value="linked">Linked Accounts</TabsTrigger>
-                  <TabsTrigger value="security">Account Security</TabsTrigger>
                 </TabsList>
                 
                 <form onSubmit={handleSubmit}>
@@ -156,29 +155,69 @@ const SellerSignUp = () => {
                   <TabsContent value="personal" className="space-y-6 mt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="firstName">First Name</Label>
+                        <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
                         <Input
                           id="firstName"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
                           placeholder="Samarth"
-                          required
+                          className="h-12 text-base rounded-lg"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="lastName">Last Name</Label>
+                        <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
                         <Input
                           id="lastName"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
                           placeholder="Nasula"
-                          required
+                          className="h-12 text-base rounded-lg"
                         />
                       </div>
                     </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="your.email@university.edu"
+                          className="h-12 text-base rounded-lg"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Create a password"
+                            className="h-12 text-base rounded-lg pr-10"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-muted-foreground" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label>Profile Picture</Label>
+                      <Label className="text-sm font-medium">Profile Picture</Label>
                       <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center">
                           {profilePicture ? (
@@ -195,8 +234,9 @@ const SellerSignUp = () => {
                           type="button"
                           variant="outline"
                           onClick={() => document.getElementById('profilePic')?.click()}
+                          className="rounded-lg"
                         >
-                          Upload Photo
+                          📸 Upload Photo
                         </Button>
                         <input
                           id="profilePic"
@@ -209,14 +249,16 @@ const SellerSignUp = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="bio">Bio</Label>
+                      <Label htmlFor="bio" className="text-sm font-medium">Bio</Label>
                       <Textarea
                         id="bio"
                         value={bio}
                         onChange={(e) => setBio(e.target.value)}
-                        placeholder="Tell us about yourself..."
+                        placeholder="Tell us about yourself and your skills... 🚀"
                         rows={4}
+                        className="rounded-lg resize-none"
                       />
+                      <p className="text-xs text-muted-foreground">Share what makes you unique as a student!</p>
                     </div>
 
                     <div className="space-y-4">
@@ -460,59 +502,14 @@ const SellerSignUp = () => {
                           ))}
                         </div>
                       </div>
-                    </div>
-                  </TabsContent>
 
-                  {/* Account Security Tab */}
-                  <TabsContent value="security" className="space-y-6 mt-6">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Enter your email"
-                          required
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <div className="relative">
-                          <Input
-                            id="password"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Create a strong password"
-                            required
-                            className="pr-10"
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() => setShowPassword(!showPassword)}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="mt-8">
+                      <div className="mt-8 pt-6 border-t">
                         <Button
                           type="submit"
-                          className="w-full bg-primary hover:bg-primary-hover text-primary-foreground"
                           size="lg"
+                          className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary-hover text-primary-foreground rounded-lg"
                         >
-                          Create Account & Continue
+                          Create Account & Start Earning! 🎉
                         </Button>
                       </div>
                     </div>
@@ -524,7 +521,7 @@ const SellerSignUp = () => {
                 <p className="text-sm text-muted-foreground">
                   Already have an account?{" "}
                   <Link to="/seller/signin" className="text-primary hover:underline font-medium">
-                    Sign In
+                    Sign in here!
                   </Link>
                 </p>
               </div>

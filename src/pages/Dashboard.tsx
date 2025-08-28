@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Header } from "@/components/Header";
+import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
 import { 
   MessageCircle,
@@ -37,6 +37,7 @@ import {
 interface Order {
   id: string;
   buyer: string;
+  buyerRating?: number;  // Add buyer rating
   gig: string;
   dueDate: string;
   total: string;
@@ -57,6 +58,7 @@ const Dashboard = () => {
     {
       id: "1",
       buyer: "Antaroop",
+      buyerRating: 4.8,
       gig: "abcd...",
       dueDate: "04/13/2024",
       total: "$100",
@@ -66,6 +68,7 @@ const Dashboard = () => {
     {
       id: "2", 
       buyer: "Sam",
+      buyerRating: 4.7,
       gig: "abcd...",
       dueDate: "04/03/2023",
       total: "$100",
@@ -108,15 +111,15 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <AuthenticatedHeader />
       
       <div className="py-8 px-4">
         <div className="container mx-auto max-w-7xl">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, Student! 🎯</h1>
             <p className="text-muted-foreground">
-              Welcome back! Here's an overview of your seller performance
+              Ready to showcase your skills and grow your career?
             </p>
           </div>
 
@@ -216,8 +219,18 @@ const Dashboard = () => {
                     </TableHeader>
                     <TableBody>
                       {orders.map((order) => (
-                        <TableRow key={order.id}>
-                          <TableCell className="font-medium">{order.buyer}</TableCell>
+                        <TableRow key={order.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">
+                            <div className="flex items-center space-x-2">
+                              <span>{order.buyer}</span>
+                              {order.buyerRating && (
+                                <div className="flex items-center space-x-1 text-xs bg-muted rounded px-2 py-1">
+                                  <span className="text-warning">★</span>
+                                  <span className="font-medium">{order.buyerRating}</span>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
                           <TableCell>{order.gig}</TableCell>
                           <TableCell>{order.dueDate}</TableCell>
                           <TableCell className="font-medium">{order.total}</TableCell>

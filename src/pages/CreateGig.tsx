@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Header } from "@/components/Header";
+import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -291,7 +291,7 @@ const CreateGig = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <AuthenticatedHeader />
       
       <div className="py-8 px-4">
         <div className="container mx-auto max-w-4xl">
