@@ -2,51 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Univ Jobs Design System - Professional, Clean, Fiverr-inspired */
+/* Univ Jobs Design System - Student-Centric, Friendly, University-inspired */
 
 @layer base {
   :root {
-    /* Core Brand Colors */
+    /* Core Brand Colors - University Blues & Greens */
     --background: 0 0% 100%;
-    --foreground: 215 25% 27%;
+    --foreground: 215 25% 20%;
     
-    /* Univ Jobs Brand Green */
-    --primary: 150 65% 45%;
+    /* University Brand Colors */
+    --primary: 210 90% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 150 65% 40%;
-    --primary-light: 150 60% 95%;
+    --primary-hover: 210 90% 50%;
+    --primary-light: 210 80% 95%;
 
-    /* Card & Surface Colors */
+    /* Card & Surface Colors - Soft, Paper-like */
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
-    --card-border: 220 13% 91%;
+    --card-foreground: 215 25% 20%;
+    --card-border: 210 20% 90%;
 
-    /* Interactive Elements */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 215 25% 27%;
-    --secondary-hover: 220 14% 92%;
+    /* Interactive Elements - Friendly University Colors */
+    --secondary: 150 55% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 150 55% 45%;
 
-    /* Muted & Subtle */
-    --muted: 220 14% 96%;
-    --muted-foreground: 215 16% 47%;
+    /* Muted & Subtle - Notebook/Paper feel */
+    --muted: 45 15% 96%;
+    --muted-foreground: 215 15% 50%;
 
-    /* Accent Colors */
-    --accent: 150 60% 95%;
-    --accent-foreground: 150 65% 45%;
+    /* Accent Colors - Campus Green */
+    --accent: 150 50% 95%;
+    --accent-foreground: 150 60% 40%;
 
-    /* Status Colors */
-    --destructive: 0 84% 60%;
+    /* Status Colors - Student-friendly */
+    --destructive: 355 75% 60%;
     --destructive-foreground: 0 0% 100%;
-    --success: 142 76% 36%;
+    --success: 140 65% 45%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
+    --warning: 35 85% 55%;
     --warning-foreground: 0 0% 100%;
 
-    /* Form Elements */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --input-focus: 150 65% 45%;
-    --ring: 150 65% 45%;
+    /* Form Elements - Friendly borders */
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --input-focus: 210 90% 55%;
+    --ring: 210 90% 55%;
 
     /* Footer */
     --footer-bg: 215 25% 15%;
@@ -61,9 +61,10 @@
     --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(150, 65%, 45%) 0%, hsl(150, 70%, 50%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(220, 14%, 99%) 100%);
+    /* Gradients - University-inspired */
+    --gradient-hero: linear-gradient(135deg, hsl(210, 90%, 55%) 0%, hsl(150, 65%, 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 15%, 98%) 100%);
+    --gradient-accent: linear-gradient(90deg, hsl(210, 80%, 95%) 0%, hsl(150, 50%, 95%) 100%);
 
     /* Transitions */
     --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

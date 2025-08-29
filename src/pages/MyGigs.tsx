@@ -17,8 +17,6 @@ import {
   Plus, 
   Search,
   Eye,
-  Heart,
-  ShoppingCart,
   Edit,
   Trash2,
   Play,
@@ -218,11 +216,13 @@ const MyGigs = () => {
                     
                     {/* Quick actions overlay */}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
+                      <Link to={`/seller/view-gig/${gig.id}`}>
+                        <Button size="sm" variant="secondary" className="rounded-full">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </Link>
                       <Button size="sm" variant="secondary" className="rounded-full">
                         <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="secondary" className="rounded-full">
-                        <Eye className="h-4 w-4" />
                       </Button>
                       <Button size="sm" variant="destructive" className="rounded-full">
                         <Trash2 className="h-4 w-4" />
@@ -262,12 +262,11 @@ const MyGigs = () => {
                         <span className="font-medium">{gig.views}</span>
                       </div>
                       <div className="flex items-center justify-center bg-muted rounded p-2">
-                        <Heart className="h-3 w-3 mr-1 text-muted-foreground" />
-                        <span className="font-medium">{gig.clicks}</span>
+                        <span className="text-muted-foreground">★</span>
+                        <span className="font-medium ml-1">4.9</span>
                       </div>
                       <div className="flex items-center justify-center bg-muted rounded p-2">
-                        <ShoppingCart className="h-3 w-3 mr-1 text-muted-foreground" />
-                        <span className="font-medium">{gig.orders}</span>
+                        <span className="font-medium">{gig.orders} orders</span>
                       </div>
                     </div>
 
@@ -277,15 +276,27 @@ const MyGigs = () => {
                         ${gig.price}
                       </div>
                       <div className="flex space-x-1">
-                        <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-lg">
+                        <Link to={`/seller/view-gig/${gig.id}`}>
+                          <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-lg" title="View">
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                        </Link>
+                        <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-lg" title="Edit">
                           <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button size="sm" variant="outline" className="h-8 w-8 p-0 rounded-lg" title="Duplicate">
+                          <span className="text-xs">⧉</span>
                         </Button>
                         <Button 
                           size="sm" 
                           variant={gig.status === 'active' ? 'secondary' : 'default'}
                           className="h-8 w-8 p-0 rounded-lg"
+                          title={gig.status === 'active' ? 'Pause' : 'Activate'}
                         >
                           {gig.status === 'active' ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
+                        </Button>
+                        <Button size="sm" variant="destructive" className="h-8 w-8 p-0 rounded-lg" title="Delete">
+                          <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>

@@ -45,13 +45,13 @@ export const AuthenticatedHeader = () => {
                     location.pathname.includes('/seller/my-business') ? 'text-primary' : 'text-foreground'
                   }`}
                 >
-                  My Business <ChevronDown className="ml-1 h-4 w-4" />
+                  My Orders <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem asChild>
                   <Link to="/seller/my-business" className="w-full">
-                    Gigs & Earnings
+                    Orders & Earnings
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -89,13 +89,17 @@ export const AuthenticatedHeader = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                Profile
+              <DropdownMenuItem asChild>
+                <Link to="/seller/profile" className="w-full">
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
+              <DropdownMenuItem asChild>
+                <Link to="/seller/settings" className="w-full">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <LogOut className="mr-2 h-4 w-4" />

@@ -145,14 +145,6 @@ const Dashboard = () => {
                     </div>
                     
                     <div className="text-center">
-                      <div className="h-12 w-12 bg-primary/10 rounded-lg mx-auto mb-2 flex items-center justify-center">
-                        <Clock className="h-6 w-6 text-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">Response Time</p>
-                      <p className="text-xl font-bold">20%</p>
-                    </div>
-                    
-                    <div className="text-center">
                       <div className="h-12 w-12 bg-success/10 rounded-lg mx-auto mb-2 flex items-center justify-center">
                         <CheckCircle className="h-6 w-6 text-success" />
                       </div>

@@ -24,23 +24,23 @@ const SellerLanding = () => {
   const benefits = [
     {
       icon: DollarSign,
-      title: "Flexible Earning",
-      description: "Set your own rates and work on your schedule"
+      title: "Earn While Learning",
+      description: "Get paid for projects that build your portfolio"
     },
     {
       icon: Globe,
-      title: "Global Audience",
-      description: "Connect with clients from around the world"
+      title: "Campus & Beyond",
+      description: "Work with students and businesses worldwide"
     },
     {
       icon: Shield,
-      title: "Secure Payments",
-      description: "Get paid safely and on time, every time"
+      title: "Safe & Secure",
+      description: "Protected payments and trusted platform"
     },
     {
       icon: Star,
-      title: "Build Your Reputation",
-      description: "Grow your professional profile and earn reviews"
+      title: "Build Your Profile",
+      description: "Showcase skills and gain real experience"
     }
   ];
 
@@ -84,23 +84,23 @@ const SellerLanding = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl font-bold text-foreground mb-6">
-            Start selling your skills. <br />
-            <span className="text-primary">Grow your career.</span>
+            Find jobs. Earn skills. <br />
+            <span className="text-primary">Build your future.</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Univ Jobs connects you with global buyers for flexible, skill-building jobs.
+            Univ Jobs connects students with exciting projects to showcase talent and earn money! 🎓
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/seller/signup">
-              <Button size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-4 text-lg">
-                Start Selling
+              <Button size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-4 text-lg rounded-xl">
+                Join as Student
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link to="/seller/signin">
-              <Button variant="outline" size="lg" className="px-8 py-4 text-lg">
-                Already a Seller? Sign In
+              <Button variant="outline" size="lg" className="px-8 py-4 text-lg rounded-xl border-2">
+                Sign In
               </Button>
             </Link>
           </div>
@@ -172,10 +172,10 @@ const SellerLanding = () => {
             Ready to start your journey?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of sellers already earning on Univ Jobs
+            Join thousands of students already earning and learning on Univ Jobs! 🚀
           </p>
           <Link to="/seller/signup">
-            <Button size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-4 text-lg">
+            <Button size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-4 text-lg rounded-xl">
               Get Started Today
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

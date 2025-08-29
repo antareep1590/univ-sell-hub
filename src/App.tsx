@@ -13,6 +13,9 @@ import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics"; 
 import Earnings from "./pages/Earnings";
 import MyBusiness from "./pages/MyBusiness";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import ViewGig from "./pages/ViewGig";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,9 @@ const App = () => (
           <Route path="/seller/analytics" element={<Analytics />} />
           <Route path="/seller/earnings" element={<Earnings />} />
           <Route path="/seller/my-business" element={<MyBusiness />} />
+          <Route path="/seller/profile" element={<Profile />} />
+          <Route path="/seller/settings" element={<Settings />} />
+          <Route path="/seller/view-gig/:id" element={<ViewGig />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

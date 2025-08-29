@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 const SellerSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +26,15 @@ const SellerSignIn = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Back Button */}
+      <div className="p-4">
+        <Link to="/seller" className="inline-flex items-center text-muted-foreground hover:text-primary transition-colors">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Home
+        </Link>
+      </div>
       
-      <div className="py-12 px-4">
+      <div className="py-8 px-4">
         <div className="container mx-auto max-w-md">
           {/* College-style illustration placeholder */}
           <div className="text-center mb-8">
