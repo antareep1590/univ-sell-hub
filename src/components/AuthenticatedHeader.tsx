@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronDown, LogOut, Settings, User } from "lucide-react";
+import { ChevronDown, LogOut, Settings, User, MessageCircle } from "lucide-react";
 
 export const AuthenticatedHeader = () => {
   const location = useLocation();
@@ -58,15 +58,6 @@ export const AuthenticatedHeader = () => {
             </DropdownMenu>
             
             <Link 
-              to="/seller/analytics" 
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive('/seller/analytics') ? 'text-primary' : 'text-foreground'
-              }`}
-            >
-              Analytics
-            </Link>
-            
-            <Link 
               to="/seller/my-gigs" 
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive('/seller/my-gigs') ? 'text-primary' : 'text-foreground'
@@ -74,10 +65,28 @@ export const AuthenticatedHeader = () => {
             >
               My Gigs
             </Link>
+            
+            <Link 
+              to="/seller/analytics" 
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive('/seller/analytics') ? 'text-primary' : 'text-foreground'
+              }`}
+            >
+              Analytics
+            </Link>
           </nav>
         </div>
 
         <div className="flex items-center space-x-4">
+          <Link to="/seller/messages">
+            <Button variant="ghost" size="sm" className="relative">
+              <MessageCircle className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive rounded-full text-xs text-destructive-foreground flex items-center justify-center">
+                2
+              </span>
+            </Button>
+          </Link>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">

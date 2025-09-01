@@ -258,21 +258,86 @@ const ViewGig = () => {
                 <CardHeader>
                   <CardTitle>Buyer Requirements</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {gigData.requirements.map((req, index) => (
-                    <div key={index} className="border-b border-border pb-4 last:border-b-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-medium text-foreground">{req.question}</h3>
-                        {req.required && (
-                          <Badge variant="destructive" className="text-xs">Required</Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Type: {req.type.replace('_', ' ')}
-                        {req.options && ` (Options: ${req.options.join(', ')})`}
-                      </p>
+                <CardContent className="space-y-6">
+                  {/* Requirements Template */}
+                  <div>
+                    <h3 className="font-medium text-foreground mb-4">Questions for Buyers</h3>
+                    <div className="space-y-4">
+                      {gigData.requirements.map((req, index) => (
+                        <div key={index} className="border-b border-border pb-4 last:border-b-0">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium text-foreground">{req.question}</h4>
+                            {req.required && (
+                              <Badge variant="destructive" className="text-xs">Required</Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Type: {req.type.replace('_', ' ')}
+                            {req.options && ` (Options: ${req.options.join(', ')})`}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Buyer Responses */}
+                  <div className="border-t pt-6">
+                    <h3 className="font-medium text-foreground mb-4">Buyer Responses</h3>
+                    <div className="space-y-6">
+                      {/* Mock buyer responses */}
+                      <div className="border rounded-lg p-4">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
+                            <span className="text-primary-foreground font-bold text-xs">MJ</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Max Johnson</h4>
+                            <p className="text-sm text-muted-foreground">Order #1234 • Completed</p>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">What is your brand/business name?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">InnovateTech Solutions</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">What social media platforms do you need graphics for?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">Instagram, LinkedIn, Twitter</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">Do you have brand colors or a logo to include?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">Yes, primary colors are blue (#1a73e8) and white. Logo attached in files.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="border rounded-lg p-4">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center">
+                            <span className="text-primary-foreground font-bold text-xs">SR</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Sanya Rodriguez</h4>
+                            <p className="text-sm text-muted-foreground">Order #1235 • In Progress</p>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">What is your brand/business name?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">Mindful Wellness Studio</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">What social media platforms do you need graphics for?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">Instagram, Facebook</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground mb-1">Do you have brand colors or a logo to include?</p>
+                            <p className="text-sm text-muted-foreground bg-muted rounded p-2">Soft greens and earth tones. No logo yet, but prefer minimalist design.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>

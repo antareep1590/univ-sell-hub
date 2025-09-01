@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
+import { Link } from "react-router-dom";
 import { 
   DollarSign,
   Clock,
@@ -101,10 +102,12 @@ const Earnings = () => {
                       <DollarSign className="h-4 w-4 mr-2" />
                       Withdraw Balance
                     </Button>
-                    <Button variant="outline" className="w-full">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Manage Payout Methods
-                    </Button>
+                    <Link to="/seller/manage-payouts">
+                      <Button variant="outline" className="w-full">
+                        <Settings className="h-4 w-4 mr-2" />
+                        Manage Payout Methods
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>

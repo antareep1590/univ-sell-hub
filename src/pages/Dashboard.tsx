@@ -20,6 +20,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
+import { Link } from "react-router-dom";
 import { 
   MessageCircle,
   Calendar,
@@ -276,10 +277,12 @@ const Dashboard = () => {
                       <MessageCircle className="h-5 w-5 mr-2" />
                       Inbox
                     </CardTitle>
-                    <Button variant="ghost" size="sm">
-                      <Eye className="h-4 w-4 mr-1" />
-                      View All
-                    </Button>
+                    <Link to="/seller/messages">
+                      <Button variant="ghost" size="sm">
+                        <Eye className="h-4 w-4 mr-1" />
+                        View All
+                      </Button>
+                    </Link>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
