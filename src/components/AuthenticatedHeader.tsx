@@ -27,7 +27,7 @@ export const AuthenticatedHeader = () => {
             <span className="font-semibold text-xl text-foreground">Univ Jobs</span>
           </Link>
           
-          <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden md:flex items-center space-x-6">
             <Link 
               to="/seller/dashboard" 
               className={`text-sm font-medium transition-colors hover:text-primary ${
@@ -35,6 +35,15 @@ export const AuthenticatedHeader = () => {
               }`}
             >
               Dashboard
+            </Link>
+            
+            <Link 
+              to="/seller/my-gigs" 
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive('/seller/my-gigs') ? 'text-primary' : 'text-foreground'
+              }`}
+            >
+              My Gigs
             </Link>
             
             <DropdownMenu>
@@ -45,7 +54,7 @@ export const AuthenticatedHeader = () => {
                     location.pathname.includes('/seller/my-business') ? 'text-primary' : 'text-foreground'
                   }`}
                 >
-                  My Orders <ChevronDown className="ml-1 h-4 w-4" />
+                  My Business <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -56,15 +65,6 @@ export const AuthenticatedHeader = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
-            <Link 
-              to="/seller/my-gigs" 
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive('/seller/my-gigs') ? 'text-primary' : 'text-foreground'
-              }`}
-            >
-              My Gigs
-            </Link>
             
             <Link 
               to="/seller/analytics" 

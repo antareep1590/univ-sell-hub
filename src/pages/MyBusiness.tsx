@@ -85,9 +85,9 @@ const MyBusiness = () => {
         <div className="container mx-auto max-w-7xl">
           {/* Page Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">My Orders 📋</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">My Business</h1>
             <p className="text-muted-foreground">
-              Track your orders and manage all student projects in one place
+              Manage your orders and track earnings
             </p>
           </div>
 

@@ -22,6 +22,7 @@ import {
   Download,
   Settings
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Transaction {
   id: string;
@@ -88,15 +89,17 @@ const EarningsPanel = () => {
                 <p className="text-3xl font-bold text-foreground">$50</p>
               </div>
               <div className="pt-4 border-t">
-                <Button className="w-full mb-2">
-                  <DollarSign className="h-4 w-4 mr-2" />
-                  Withdraw Balance
+                <Button className="w-full mb-2" asChild>
+                  <Link to="/seller/withdraw-balance">
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Withdraw Balance
+                  </Link>
                 </Button>
                 <Button variant="outline" className="w-full" asChild>
-                  <a href="/seller/manage-payouts">
+                  <Link to="/seller/manage-payouts">
                     <Settings className="h-4 w-4 mr-2" />
                     Manage Payout Methods
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>

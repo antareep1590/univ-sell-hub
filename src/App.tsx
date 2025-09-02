@@ -19,6 +19,7 @@ import Settings from "./pages/Settings";
 import ViewGig from "./pages/ViewGig";
 import Messages from "./pages/Messages";
 import ManagePayouts from "./pages/ManagePayouts";
+import WithdrawBalance from "./pages/WithdrawBalance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/seller/view-gig/:id" element={<ViewGig />} />
           <Route path="/seller/messages" element={<Messages />} />
           <Route path="/seller/manage-payouts" element={<ManagePayouts />} />
+          <Route path="/seller/withdraw-balance" element={<WithdrawBalance />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
