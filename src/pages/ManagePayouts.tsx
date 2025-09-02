@@ -27,6 +27,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { AuthenticatedHeader } from "@/components/AuthenticatedHeader";
 import { Footer } from "@/components/Footer";
 import { 
@@ -37,10 +47,14 @@ import {
   ArrowLeft,
   AlertCircle,
   CheckCircle,
-  Clock
+  Clock,
+  Shield
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 interface PayoutMethod {
   id: string;
@@ -59,11 +73,48 @@ interface PayoutRequest {
   status: 'pending' | 'processing' | 'completed' | 'failed';
 }
 
+// Validation schemas
+const bankSchema = z.object({
+  methodType: z.literal("bank"),
+  bankName: z.string().min(2, "Bank name is required"),
+  accountNumber: z.string().min(8, "Account number must be at least 8 characters"),
+  routingNumber: z.string().length(9, "Routing number must be exactly 9 digits"),
+});
+
+const paypalSchema = z.object({
+  methodType: z.literal("paypal"),
+  email: z.string().email("Please enter a valid email address"),
+});
+
+const otherSchema = z.object({
+  methodType: z.literal("other"),
+  methodName: z.string().min(2, "Method name is required"),
+  accountInfo: z.string().min(5, "Account information is required"),
+});
+
+const payoutMethodSchema = z.discriminatedUnion("methodType", [
+  bankSchema,
+  paypalSchema,
+  otherSchema,
+]);
+
+type PayoutMethodForm = z.infer<typeof payoutMethodSchema>;
+
 const ManagePayouts = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isAddingMethod, setIsAddingMethod] = useState(false);
   const [selectedMethodType, setSelectedMethodType] = useState<string>("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [show2FAConfirm, setShow2FAConfirm] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+  const form = useForm<PayoutMethodForm>({
+    resolver: zodResolver(payoutMethodSchema),
+    defaultValues: {
+      methodType: "bank",
+    },
+  });
 
   const [payoutMethods, setPayoutMethods] = useState<PayoutMethod[]>([
     {
@@ -128,31 +179,59 @@ const ManagePayouts = () => {
     );
   };
 
-  const handleAddMethod = () => {
-    if (!selectedMethodType) {
-      toast({
-        title: "Select Method Type",
-        description: "Please select a payout method type first.",
-        variant: "destructive"
-      });
-      return;
-    }
+  const handleAddMethod = (data: PayoutMethodForm) => {
+    const action = () => {
+      // In real app, this would validate and add the method
+      const methodDetails = 
+        data.methodType === 'bank' ? `${data.bankName} ***${data.accountNumber.slice(-4)}` :
+        data.methodType === 'paypal' ? data.email :
+        `${data.methodName} - ${data.accountInfo}`;
 
-    // In real app, this would validate and add the method
-    toast({
-      title: "Payout Method Added! 🎉",
-      description: "Your new payout method has been added successfully.",
-    });
-    setIsAddingMethod(false);
-    setSelectedMethodType("");
+      const newMethod: PayoutMethod = {
+        id: Date.now().toString(),
+        type: data.methodType,
+        name: data.methodType === 'bank' ? 'Bank Transfer' : 
+              data.methodType === 'paypal' ? 'PayPal' : 
+              data.methodName,
+        details: methodDetails,
+        isDefault: payoutMethods.length === 0,
+        status: 'pending'
+      };
+
+      setPayoutMethods(prev => [...prev, newMethod]);
+      toast({
+        title: "Payout Method Added! 🎉",
+        description: "Your new payout method has been added successfully.",
+      });
+      setIsAddingMethod(false);
+      form.reset();
+      setSelectedMethodType("");
+    };
+
+    setPendingAction(() => action);
+    setShow2FAConfirm(true);
+  };
+
+  const handle2FAConfirm = () => {
+    if (pendingAction) {
+      pendingAction();
+      setPendingAction(null);
+    }
+    setShow2FAConfirm(false);
   };
 
   const handleDeleteMethod = (id: string) => {
-    setPayoutMethods(prev => prev.filter(method => method.id !== id));
-    toast({
-      title: "Method Removed",
-      description: "Payout method has been deleted successfully."
-    });
+    const action = () => {
+      setPayoutMethods(prev => prev.filter(method => method.id !== id));
+      toast({
+        title: "Method Removed",
+        description: "Payout method has been deleted successfully."
+      });
+      setShowDeleteConfirm(null);
+    };
+
+    setPendingAction(() => action);
+    setShow2FAConfirm(true);
   };
 
   const handleSetDefault = (id: string) => {
@@ -191,7 +270,7 @@ const ManagePayouts = () => {
                   Add, edit, and manage how you receive your earnings
                 </p>
               </div>
-              <Dialog open={isAddingMethod} onOpenChange={setIsAddingMethod}>
+                <Dialog open={isAddingMethod} onOpenChange={setIsAddingMethod}>
                 <DialogTrigger asChild>
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
@@ -205,10 +284,16 @@ const ManagePayouts = () => {
                       Add a new way to receive your earnings
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="space-y-4">
+                  <form onSubmit={form.handleSubmit(handleAddMethod)} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="method-type">Method Type</Label>
-                      <Select value={selectedMethodType} onValueChange={setSelectedMethodType}>
+                      <Select 
+                        value={selectedMethodType} 
+                        onValueChange={(value) => {
+                          setSelectedMethodType(value);
+                          form.setValue("methodType", value as any);
+                        }}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select payout method" />
                         </SelectTrigger>
@@ -218,21 +303,53 @@ const ManagePayouts = () => {
                           <SelectItem value="other">Other Method</SelectItem>
                         </SelectContent>
                       </Select>
+                      {form.formState.errors.methodType && (
+                        <p className="text-sm text-destructive">
+                          {form.formState.errors.methodType.message}
+                        </p>
+                      )}
                     </div>
 
                     {selectedMethodType === 'bank' && (
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <Label htmlFor="bank-name">Bank Name</Label>
-                          <Input id="bank-name" placeholder="e.g. Chase Bank" />
+                          <Input 
+                            id="bank-name" 
+                            placeholder="e.g. Chase Bank"
+                            {...form.register("bankName")}
+                          />
+                          {(form.formState.errors as any).bankName && (
+                            <p className="text-sm text-destructive">
+                              {(form.formState.errors as any).bankName.message}
+                            </p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="account-number">Account Number</Label>
-                          <Input id="account-number" placeholder="Account number" />
+                          <Input 
+                            id="account-number" 
+                            placeholder="Account number"
+                            {...form.register("accountNumber")}
+                          />
+                          {(form.formState.errors as any).accountNumber && (
+                            <p className="text-sm text-destructive">
+                              {(form.formState.errors as any).accountNumber.message}
+                            </p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="routing-number">Routing Number</Label>
-                          <Input id="routing-number" placeholder="Routing number" />
+                          <Input 
+                            id="routing-number" 
+                            placeholder="Routing number"
+                            {...form.register("routingNumber")}
+                          />
+                          {(form.formState.errors as any).routingNumber && (
+                            <p className="text-sm text-destructive">
+                              {(form.formState.errors as any).routingNumber.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     )}
@@ -240,7 +357,17 @@ const ManagePayouts = () => {
                     {selectedMethodType === 'paypal' && (
                       <div className="space-y-2">
                         <Label htmlFor="paypal-email">PayPal Email</Label>
-                        <Input id="paypal-email" type="email" placeholder="your@email.com" />
+                        <Input 
+                          id="paypal-email" 
+                          type="email" 
+                          placeholder="your@email.com"
+                          {...form.register("email")}
+                        />
+                        {(form.formState.errors as any).email && (
+                          <p className="text-sm text-destructive">
+                            {(form.formState.errors as any).email.message}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -248,24 +375,46 @@ const ManagePayouts = () => {
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <Label htmlFor="method-name">Method Name</Label>
-                          <Input id="method-name" placeholder="e.g. Venmo, Zelle" />
+                          <Input 
+                            id="method-name" 
+                            placeholder="e.g. Venmo, Zelle"
+                            {...form.register("methodName")}
+                          />
+                          {(form.formState.errors as any).methodName && (
+                            <p className="text-sm text-destructive">
+                              {(form.formState.errors as any).methodName.message}
+                            </p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="account-info">Account Information</Label>
-                          <Input id="account-info" placeholder="Account details" />
+                          <Input 
+                            id="account-info" 
+                            placeholder="Account details"
+                            {...form.register("accountInfo")}
+                          />
+                          {(form.formState.errors as any).accountInfo && (
+                            <p className="text-sm text-destructive">
+                              {(form.formState.errors as any).accountInfo.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     )}
 
                     <div className="flex justify-end space-x-2 pt-4">
-                      <Button variant="outline" onClick={() => setIsAddingMethod(false)}>
+                      <Button type="button" variant="outline" onClick={() => {
+                        setIsAddingMethod(false);
+                        form.reset();
+                        setSelectedMethodType("");
+                      }}>
                         Cancel
                       </Button>
-                      <Button onClick={handleAddMethod}>
+                      <Button type="submit">
                         Add Method
                       </Button>
                     </div>
-                  </div>
+                  </form>
                 </DialogContent>
               </Dialog>
             </div>
@@ -335,7 +484,7 @@ const ManagePayouts = () => {
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              onClick={() => handleDeleteMethod(method.id)}
+                              onClick={() => setShowDeleteConfirm(method.id)}
                               className="text-destructive hover:text-destructive"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -392,6 +541,57 @@ const ManagePayouts = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!showDeleteConfirm} onOpenChange={() => setShowDeleteConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Payout Method</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this payout method? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (showDeleteConfirm) {
+                  handleDeleteMethod(showDeleteConfirm);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete Method
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* 2FA Confirmation Dialog */}
+      <AlertDialog open={show2FAConfirm} onOpenChange={setShow2FAConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center">
+              <Shield className="h-5 w-5 mr-2" />
+              Security Confirmation
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              For your security, please confirm this action. In a real application, this would require 2FA verification.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setPendingAction(null);
+              setShow2FAConfirm(false);
+            }}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handle2FAConfirm}>
+              Confirm Action
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Footer />
     </div>

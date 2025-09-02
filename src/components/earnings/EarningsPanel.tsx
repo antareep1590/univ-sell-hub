@@ -92,9 +92,11 @@ const EarningsPanel = () => {
                   <DollarSign className="h-4 w-4 mr-2" />
                   Withdraw Balance
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Manage Payout Methods
+                <Button variant="outline" className="w-full" asChild>
+                  <a href="/seller/manage-payouts">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Manage Payout Methods
+                  </a>
                 </Button>
               </div>
             </div>
