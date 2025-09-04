@@ -39,8 +39,9 @@ interface Education {
 }
 
 const SellerSignUp = () => {
-  const [activeTab, setActiveTab] = useState("personal");
+  const [activeTab, setActiveTab] = useState("quickstart");
   const [showPassword, setShowPassword] = useState(false);
+  const [signedUpWith, setSignedUpWith] = useState<'google' | 'microsoft' | null>(null);
   
   // Personal Info State
   const [firstName, setFirstName] = useState("");
@@ -53,13 +54,13 @@ const SellerSignUp = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [education, setEducation] = useState<Education[]>([]);
   
-  // Linked Accounts State
-  const [connectedAccounts, setConnectedAccounts] = useState({
-    google: false,
-    facebook: false,
-    twitter: false,
-    github: false,
-    stackoverflow: false
+  // Linked Accounts State - now using direct input links
+  const [linkedAccounts, setLinkedAccounts] = useState({
+    linkedin: "",
+    github: "",
+    twitter: "",
+    behance: "",
+    portfolio: ""
   });
   
   // Account Security State
@@ -108,11 +109,30 @@ const SellerSignUp = () => {
     setEducation(updated);
   };
 
-  const handleConnect = (platform: string) => {
-    setConnectedAccounts(prev => ({
+  const handleLinkedAccountChange = (platform: string, value: string) => {
+    setLinkedAccounts(prev => ({
       ...prev,
-      [platform]: !prev[platform as keyof typeof prev]
+      [platform]: value
     }));
+  };
+
+  const handleOAuthSignUp = (provider: 'google' | 'microsoft') => {
+    // Simulate OAuth sign-up - in reality this would redirect to OAuth provider
+    setSignedUpWith(provider);
+    
+    // Pre-fill with simulated data from OAuth provider
+    if (provider === 'google') {
+      setFirstName("John");
+      setLastName("Doe");
+      setEmail("john.doe@gmail.com");
+    } else if (provider === 'microsoft') {
+      setFirstName("Jane");
+      setLastName("Smith");
+      setEmail("jane.smith@outlook.com");
+    }
+    
+    // Move to personal info tab
+    setActiveTab("personal");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -143,14 +163,74 @@ const SellerSignUp = () => {
             </CardHeader>
             
             <CardContent>
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="quickstart">Quick Start</TabsTrigger>
                   <TabsTrigger value="personal">Personal Info</TabsTrigger>
                   <TabsTrigger value="professional">Professional Info</TabsTrigger>
                   <TabsTrigger value="linked">Linked Accounts</TabsTrigger>
                 </TabsList>
                 
                 <form onSubmit={handleSubmit}>
+                  {/* Quick Start Tab */}
+                  <TabsContent value="quickstart" className="space-y-6 mt-6">
+                    <div className="text-center space-y-6">
+                      <div className="space-y-2">
+                        <h2 className="text-2xl font-semibold text-foreground">Welcome to Univ Jobs! 🎉</h2>
+                        <p className="text-muted-foreground max-w-lg mx-auto">
+                          Sign up instantly using your Google or Microsoft account. We'll securely pre-fill your details to get you started faster!
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-4 max-w-md mx-auto">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="lg"
+                          className="w-full h-14 text-base border-2 hover:bg-muted/50"
+                          onClick={() => handleOAuthSignUp('google')}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-red-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">G</span>
+                            </div>
+                            <span>Sign up with Google</span>
+                          </div>
+                        </Button>
+                        
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="lg"
+                          className="w-full h-14 text-base border-2 hover:bg-muted/50"
+                          onClick={() => handleOAuthSignUp('microsoft')}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">M</span>
+                            </div>
+                            <span>Sign up with Microsoft</span>
+                          </div>
+                        </Button>
+                      </div>
+                      
+                      <div className="flex items-center space-x-4 text-muted-foreground">
+                        <div className="flex-1 h-px bg-border"></div>
+                        <span className="text-sm">or continue manually</span>
+                        <div className="flex-1 h-px bg-border"></div>
+                      </div>
+                      
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setActiveTab("personal")}
+                        className="text-primary hover:text-primary/80"
+                      >
+                        Fill out manually →
+                      </Button>
+                    </div>
+                  </TabsContent>
+
                   {/* Personal Info Tab */}
                   <TabsContent value="personal" className="space-y-6 mt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -162,6 +242,7 @@ const SellerSignUp = () => {
                           onChange={(e) => setFirstName(e.target.value)}
                           placeholder="Samarth"
                           className="h-12 text-base rounded-lg"
+                          readOnly={signedUpWith !== null}
                         />
                       </div>
                       <div className="space-y-2">
@@ -172,6 +253,7 @@ const SellerSignUp = () => {
                           onChange={(e) => setLastName(e.target.value)}
                           placeholder="Nasula"
                           className="h-12 text-base rounded-lg"
+                          readOnly={signedUpWith !== null}
                         />
                       </div>
                     </div>
@@ -186,34 +268,46 @@ const SellerSignUp = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="your.email@university.edu"
                           className="h-12 text-base rounded-lg"
+                          readOnly={signedUpWith !== null}
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                        <div className="relative">
-                          <Input
-                            id="password"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Create a password"
-                            className="h-12 text-base rounded-lg pr-10"
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() => setShowPassword(!showPassword)}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </Button>
+                      {signedUpWith === null && (
+                        <div className="space-y-2">
+                          <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                          <div className="relative">
+                            <Input
+                              id="password"
+                              type={showPassword ? "text" : "password"}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Create a password"
+                              className="h-12 text-base rounded-lg pr-10"
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? (
+                                <EyeOff className="h-4 w-4 text-muted-foreground" />
+                              ) : (
+                                <Eye className="h-4 w-4 text-muted-foreground" />
+                              )}
+                            </Button>
+                          </div>
                         </div>
-                      </div>
+                      )}
+                      
+                      {signedUpWith && (
+                        <div className="p-4 bg-muted/50 rounded-lg">
+                          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                            <CheckCircle className="h-4 w-4 text-success" />
+                            <span>Signed up with {signedUpWith === 'google' ? 'Google' : 'Microsoft'} - no password required</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -439,67 +533,137 @@ const SellerSignUp = () => {
                   <TabsContent value="linked" className="space-y-6 mt-6">
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold mb-4">Social Presence</h3>
-                        <div className="space-y-3">
-                          {[
-                            { key: 'google', name: 'Google', icon: '🔍' },
-                            { key: 'facebook', name: 'Facebook', icon: '📘' },
-                            { key: 'twitter', name: 'Twitter', icon: '🐦' }
-                          ].map((account) => (
-                            <div key={account.key} className="flex items-center justify-between p-4 border rounded-lg">
-                              <div className="flex items-center space-x-3">
-                                <span className="text-2xl">{account.icon}</span>
-                                <span className="font-medium">{account.name}</span>
+                        <h3 className="text-lg font-semibold mb-4 text-foreground">Link Your Accounts</h3>
+                        <p className="text-muted-foreground mb-6">
+                          Add links to your professional and social accounts to showcase your presence
+                        </p>
+                        
+                        <div className="space-y-6">
+                          {/* LinkedIn */}
+                          <div className="space-y-2">
+                            <Label htmlFor="linkedin" className="text-sm font-medium flex items-center">
+                              <div className="w-5 h-5 bg-blue-600 rounded mr-2 flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">in</span>
                               </div>
-                              <Button
-                                type="button"
-                                variant={connectedAccounts[account.key as keyof typeof connectedAccounts] ? "default" : "outline"}
-                                onClick={() => handleConnect(account.key)}
-                                className={connectedAccounts[account.key as keyof typeof connectedAccounts] ? "bg-success hover:bg-success/90" : ""}
-                              >
-                                {connectedAccounts[account.key as keyof typeof connectedAccounts] ? (
-                                  <>
-                                    <CheckCircle className="h-4 w-4 mr-1" />
-                                    Connected
-                                  </>
-                                ) : (
-                                  "Connect"
-                                )}
-                              </Button>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                              LinkedIn Profile
+                            </Label>
+                            <Input
+                              id="linkedin"
+                              value={linkedAccounts.linkedin}
+                              onChange={(e) => handleLinkedAccountChange('linkedin', e.target.value)}
+                              placeholder="https://linkedin.com/in/your-profile"
+                              className="h-12"
+                            />
+                            {linkedAccounts.linkedin && (
+                              <div className="mt-2">
+                                <Badge variant="outline" className="text-blue-600 border-blue-200">
+                                  <a href={linkedAccounts.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    View Profile →
+                                  </a>
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
 
-                      <div>
-                        <h3 className="text-lg font-semibold mb-4">Professional Presence</h3>
-                        <div className="space-y-3">
-                          {[
-                            { key: 'github', name: 'GitHub', icon: Github },
-                            { key: 'stackoverflow', name: 'Stack Overflow', icon: Globe }
-                          ].map((account) => (
-                            <div key={account.key} className="flex items-center justify-between p-4 border rounded-lg">
-                              <div className="flex items-center space-x-3">
-                                <account.icon className="h-6 w-6" />
-                                <span className="font-medium">{account.name}</span>
+                          {/* GitHub */}
+                          <div className="space-y-2">
+                            <Label htmlFor="github" className="text-sm font-medium flex items-center">
+                              <Github className="w-5 h-5 mr-2" />
+                              GitHub Profile
+                            </Label>
+                            <Input
+                              id="github"
+                              value={linkedAccounts.github}
+                              onChange={(e) => handleLinkedAccountChange('github', e.target.value)}
+                              placeholder="https://github.com/your-username"
+                              className="h-12"
+                            />
+                            {linkedAccounts.github && (
+                              <div className="mt-2">
+                                <Badge variant="outline" className="text-gray-800 border-gray-200">
+                                  <a href={linkedAccounts.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    View Profile →
+                                  </a>
+                                </Badge>
                               </div>
-                              <Button
-                                type="button"
-                                variant={connectedAccounts[account.key as keyof typeof connectedAccounts] ? "default" : "outline"}
-                                onClick={() => handleConnect(account.key)}
-                                className={connectedAccounts[account.key as keyof typeof connectedAccounts] ? "bg-success hover:bg-success/90" : ""}
-                              >
-                                {connectedAccounts[account.key as keyof typeof connectedAccounts] ? (
-                                  <>
-                                    <CheckCircle className="h-4 w-4 mr-1" />
-                                    Connected
-                                  </>
-                                ) : (
-                                  "Connect"
-                                )}
-                              </Button>
-                            </div>
-                          ))}
+                            )}
+                          </div>
+
+                          {/* Twitter */}
+                          <div className="space-y-2">
+                            <Label htmlFor="twitter" className="text-sm font-medium flex items-center">
+                              <div className="w-5 h-5 bg-blue-400 rounded-full mr-2 flex items-center justify-center">
+                                <span className="text-white text-xs">𝕏</span>
+                              </div>
+                              Twitter/X Profile
+                            </Label>
+                            <Input
+                              id="twitter"
+                              value={linkedAccounts.twitter}
+                              onChange={(e) => handleLinkedAccountChange('twitter', e.target.value)}
+                              placeholder="https://twitter.com/your-username"
+                              className="h-12"
+                            />
+                            {linkedAccounts.twitter && (
+                              <div className="mt-2">
+                                <Badge variant="outline" className="text-blue-400 border-blue-100">
+                                  <a href={linkedAccounts.twitter} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    View Profile →
+                                  </a>
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Behance */}
+                          <div className="space-y-2">
+                            <Label htmlFor="behance" className="text-sm font-medium flex items-center">
+                              <div className="w-5 h-5 bg-blue-500 rounded mr-2 flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">Be</span>
+                              </div>
+                              Behance Portfolio
+                            </Label>
+                            <Input
+                              id="behance"
+                              value={linkedAccounts.behance}
+                              onChange={(e) => handleLinkedAccountChange('behance', e.target.value)}
+                              placeholder="https://behance.net/your-profile"
+                              className="h-12"
+                            />
+                            {linkedAccounts.behance && (
+                              <div className="mt-2">
+                                <Badge variant="outline" className="text-blue-500 border-blue-100">
+                                  <a href={linkedAccounts.behance} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    View Portfolio →
+                                  </a>
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Personal Portfolio */}
+                          <div className="space-y-2">
+                            <Label htmlFor="portfolio" className="text-sm font-medium flex items-center">
+                              <Globe className="w-5 h-5 mr-2" />
+                              Personal Portfolio/Website
+                            </Label>
+                            <Input
+                              id="portfolio"
+                              value={linkedAccounts.portfolio}
+                              onChange={(e) => handleLinkedAccountChange('portfolio', e.target.value)}
+                              placeholder="https://your-website.com"
+                              className="h-12"
+                            />
+                            {linkedAccounts.portfolio && (
+                              <div className="mt-2">
+                                <Badge variant="outline" className="text-green-600 border-green-100">
+                                  <a href={linkedAccounts.portfolio} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    Visit Website →
+                                  </a>
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -507,7 +671,7 @@ const SellerSignUp = () => {
                         <Button
                           type="submit"
                           size="lg"
-                          className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary-hover text-primary-foreground rounded-lg"
+                          className="w-full h-12 text-base font-semibold bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-lg"
                         >
                           Create Account & Start Earning! 🎉
                         </Button>
