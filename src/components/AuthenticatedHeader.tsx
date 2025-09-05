@@ -105,14 +105,10 @@ export const AuthenticatedHeader = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/seller/settings" className="w-full">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
+                <Link to="/seller/signin" className="w-full">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

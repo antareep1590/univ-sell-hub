@@ -54,9 +54,7 @@ export const KYCModal: React.FC<KYCModalProps> = ({ open, onOpenChange, onKYCSub
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        const age = formData.dateOfBirth ? 
-          new Date().getFullYear() - formData.dateOfBirth.getFullYear() : 0;
-        return formData.fullName && formData.dateOfBirth && age >= 18 && formData.country && formData.idType && formData.idNumber;
+        return formData.fullName && formData.dateOfBirth && formData.country && formData.idType && formData.idNumber;
       case 2:
         return documents.governmentId && documents.proofOfAddress;
       case 3:

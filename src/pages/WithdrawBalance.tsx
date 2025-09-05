@@ -34,9 +34,8 @@ const WithdrawBalance = () => {
   const maximumWithdraw = 1000;
   
   const payoutMethods = [
-    { id: "paypal", name: "PayPal", email: "john@example.com", type: "PayPal" },
-    { id: "bank", name: "Bank Transfer", details: "****1234", type: "Bank Account" },
-    { id: "stripe", name: "Stripe", details: "****5678", type: "Stripe Express" }
+    { id: "bank1", name: "Bank Transfer", details: "Chase Bank ****1234", type: "Bank Account" },
+    { id: "bank2", name: "Bank Transfer", details: "Wells Fargo ****5678", type: "Bank Account" }
   ];
 
   const handleAmountChange = (value: string) => {
@@ -197,7 +196,7 @@ const WithdrawBalance = () => {
                                 <div>
                                   <div className="font-medium">{method.name}</div>
                                   <div className="text-sm text-muted-foreground">
-                                    {method.type} • {method.details || method.email}
+                                    {method.type} • {method.details}
                                   </div>
                                 </div>
                               </div>

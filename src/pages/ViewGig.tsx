@@ -39,6 +39,7 @@ interface GigData {
     required: boolean;
     options?: string[];
   }>;
+  bannerImage?: string;
   gallery: Array<{
     type: 'image' | 'video';
     url: string;
@@ -122,6 +123,7 @@ const ViewGig = () => {
       "Commercial use rights",
       "2 revisions included"
     ],
+    bannerImage: '/placeholder.svg',
     requirements: [
       {
         question: "What is your brand/business name?",
@@ -282,6 +284,19 @@ const ViewGig = () => {
               </div>
             </div>
           </div>
+
+          {/* Banner Image */}
+          {gigData.bannerImage && (
+            <div className="mb-8">
+              <div className="relative aspect-[3/1] bg-muted rounded-lg overflow-hidden">
+                <img
+                  src={gigData.bannerImage}
+                  alt="Gig banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}

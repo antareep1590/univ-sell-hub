@@ -68,6 +68,7 @@ interface GigData {
   description: string;
   questions: Question[];
   gallery: {
+    bannerImage: File | null;
     video: File | null;
     images: (File | null)[];
     documents: (File | null)[];
@@ -137,6 +138,7 @@ const CreateGig = () => {
     description: "",
     questions: [],
     gallery: {
+      bannerImage: null,
       video: null,
       images: [null, null, null],
       documents: [null, null, null]
@@ -218,13 +220,13 @@ const CreateGig = () => {
     }));
   };
 
-  const handleFileUpload = (type: "video" | "image" | "document", index?: number) => {
+  const handleFileUpload = (type: "banner" | "video" | "image" | "document", index?: number) => {
     const input = document.createElement('input');
     input.type = 'file';
     
     if (type === 'video') {
       input.accept = 'video/*';
-    } else if (type === 'image') {
+    } else if (type === 'image' || type === 'banner') {
       input.accept = 'image/*';
     } else {
       input.accept = '.pdf,.doc,.docx,.ppt,.pptx';
@@ -237,7 +239,8 @@ const CreateGig = () => {
           ...prev,
           gallery: {
             ...prev.gallery,
-            [type === 'video' ? 'video' : type === 'image' ? 'images' : 'documents']: 
+            [type === 'banner' ? 'bannerImage' : type === 'video' ? 'video' : type === 'image' ? 'images' : 'documents']: 
+              type === 'banner' ? file :
               type === 'video' ? file : 
               type === 'image' && index !== undefined ?
                 prev.gallery.images.map((img, i) => i === index ? file : img) :
@@ -803,6 +806,35 @@ const CreateGig = () => {
                       <p className="text-muted-foreground mb-6">
                         Encourage buyers to choose your gig by featuring a variety of your work.
                       </p>
+
+                      {/* Banner Image Upload */}
+                      <div className="mb-8">
+                        <Label className="text-lg font-medium">Banner Image</Label>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Upload a banner image that will be displayed prominently on your gig page
+                        </p>
+                        
+                        <Card 
+                          className="border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 transition-colors cursor-pointer"
+                          onClick={() => handleFileUpload('banner')}
+                        >
+                          <CardContent className="p-8 text-center">
+                            {gigData.gallery.bannerImage ? (
+                              <div>
+                                <ImageIcon className="h-12 w-12 mx-auto mb-3 text-primary" />
+                                <p className="font-medium">{gigData.gallery.bannerImage.name}</p>
+                                <p className="text-sm text-muted-foreground">Click to replace</p>
+                              </div>
+                            ) : (
+                              <div>
+                                <Upload className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
+                                <p className="font-medium">Upload Banner Image</p>
+                                <p className="text-sm text-muted-foreground">Browse or drag and drop</p>
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
 
                       {/* Video Upload */}
                       <div className="mb-8">
